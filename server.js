@@ -53,7 +53,11 @@ app.get("/api/animals", (req, res) => {
     res.json(results);
 });
 
+
+//Port location
+const PORT = process.env.PORT || 3001;
+
 //listen for requests
-app.listen(3001, () => {
-  console.log(`API server on port 3001`);
+app.listen(PORT, () => {
+  console.log(`API server now on port ${PORT}`);
 });
