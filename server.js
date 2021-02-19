@@ -7,7 +7,7 @@ const express = require("express");
 //instantiate the server
 const app = express();
 
-// MIDDLEWARE
+// =============== START OF MIDDLEWARE ===================
 // parse incoming string or array data takes incoming POST data and converts it to key/value pairings that can be accessed in the req.body object.
 //The extended: true option set inside the method call informs our server that there may be sub-array data nested in it as well,
 //so it needs to look as deep into the POST data as possible to parse all of the data correctly.
@@ -16,8 +16,14 @@ app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 // The express.json() method we used takes incoming POST data in the form of JSON and parses it into the req.body JavaScript object.
 // Both of the above middleware functions need to be set up every time you create a server that's looking to accept POST data.
-
 app.use(express.json());
+
+// instructs the server to make certain files readily available and to not gate it behind a server endpoint.
+// All front of our frontend (css/java/images/ect in the 'public folder') will now be available.
+// provide a file path to a location in our application (in this case, the public folder) and instruct the server to make these files static resources.
+app.use(express.static('public'));
+
+// =============== END OF MIDDLEWARE ===================
 
 //filter
 function filterByQuery(query, animalsArray) {
@@ -132,6 +138,22 @@ function validateAnimal(animal) {
   }
   return true;
 }
+
+// "/" brings user to the root of the server.
+// which then directs user to index.html file. 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+// directs user to zookeepers page
+app.get('/zookeepers', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+// '/animals directs user to animals.html page'
+app.get("/animals", (req, res) => {
+  res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+
 
 //Port location
 const PORT = process.env.PORT || 3001;
